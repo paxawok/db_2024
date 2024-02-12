@@ -1,0 +1,33 @@
+// This file is generated temporarily, the configuration is not actually stored here.
+{
+  "database": {
+    "1706893849436": {
+      "host": "127.0.0.1",
+      "port": 5432,
+      "user": "postgres",
+      "password": "yurasd",
+      "dbType": "PostgreSQL",
+      "database": "lab_one",
+      "advance": {
+        "hideSystemSchema": true
+      },
+      "timezone": "+00:00",
+      "usingSSH": false,
+      "useSocksProxy": false,
+      "useHTTPProxy": false,
+      "global": true,
+      "savePassword": "Forever",
+      "readonly": false,
+      "useSSL": false,
+      "fs": {
+        "showHidden": true
+      },
+      "encrypt": false,
+      "key": "1706893849436",
+      "connectionKey": "database.connections",
+      "sort": 11
+    }
+  },
+  "nosql": {},
+  "$schema": "http://127.0.0.1:8828/schema.json"
+}
