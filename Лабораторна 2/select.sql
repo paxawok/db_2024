@@ -16,3 +16,4 @@ FROM
     generate_series(1001, 10000);
 
 SELECT * FROM "Orders" WHERE "status" = 'pending';
+SELECT "category" FROM "Products" WHERE "price" > 3900;
