@@ -1,0 +1,6 @@
+###############################################################################
+# Set default behavior to automatically normalize line endings.
+###############################################################################
+dist/* linguist-vendored=false
+###############################################################################
+# Set default behavior for command prompt diff.
