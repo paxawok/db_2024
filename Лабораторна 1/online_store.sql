@@ -12,7 +12,12 @@ CREATE TABLE Products (
     name VARCHAR(255),
     description TEXT,
     price NUMERIC(10, 2),
-    category VARCHAR(100)
+    category_id INTEGER REFERENCES Categories(id)
+);
+
+CREATE TABLE Categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
 );
 
 CREATE TABLE Orders (
