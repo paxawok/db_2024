@@ -71,20 +71,36 @@ END;
 $$;
 
 
+/*ТРАНЗАКЦІЯ*/
+BEGIN;
+
+-- Додати новий продукт
+INSERT INTO Products (name, description, price, category_id) 
+VALUES ('New Product', 'Description for new product', 15.99, 1);
+
+-- Оновити існуючий продукт
+UPDATE Products 
+SET 
+    name = 'Updated Product Name',
+    description = 'Updated description for existing product',
+    price = 25.99,
+    category_id = 2
+WHERE id = 1;
+
+COMMIT;
+
 /*ТРИГЕР*/
--- при зміні таблиці продукти виведе на консоль інфу про це
 CREATE OR REPLACE FUNCTION log_new_product()
 RETURNS TRIGGER AS $$
 BEGIN
-    -- Тут може бути код, що логує новий продукт або робить інші дії
     RAISE NOTICE 'New product added: %', NEW.name;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Створення тригера для логування нових продуктів
-CREATE TRIGGER trigger_log_new_product_4
-AFTER INSERT ON products
+CREATE TRIGGER trigger_log_new_product
+AFTER INSERT ON Products
 FOR EACH ROW
 EXECUTE FUNCTION log_new_product();
+
 */

@@ -27,28 +27,64 @@ def get_products():
 @app.route('/products', methods=['POST'])
 def create_product():
     connection = connect()
+    if connection is None:
+        print("Failed to connect to the database", file=sys.stderr)
+        return jsonify({'error': 'Database connection failed'}), 500
+
     new_product = request.json
-    query = f"""
-    CALL create_product('{new_product["name"]}', '{new_product["description"]}', {new_product["price"]}, {new_product["category_id"]});
-    """
-    execute_query(connection, query)
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                query = f"""
+                CALL create_product(%s, %s, %s, %s);
+                """
+                cursor.execute(query, (new_product["name"], new_product["description"], new_product["price"], new_product["category_id"]))
+    except Exception as e:
+        connection.rollback()
+        print("Failed to create product", file=sys.stderr)
+        return jsonify({'error': 'Failed to create product', 'details': str(e)}), 500
+
     return jsonify({"message": "Product added successfully"}), 201
 
 @app.route('/products/<int:id>', methods=['PUT'])
 def update_product(id):
     connection = connect()
+    if connection is None:
+        print("Failed to connect to the database", file=sys.stderr)
+        return jsonify({'error': 'Database connection failed'}), 500
+
     product = request.json
-    query = f"""
-    CALL update_product({id}, '{product["name"]}', '{product["description"]}', {product["price"]}, {product["category_id"]});
-    """
-    execute_query(connection, query)
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                query = f"""
+                CALL update_product(%s, %s, %s, %s, %s);
+                """
+                cursor.execute(query, (id, product["name"], product["description"], product["price"], product["category_id"]))
+    except Exception as e:
+        connection.rollback()
+        print("Failed to update product", file=sys.stderr)
+        return jsonify({'error': 'Failed to update product', 'details': str(e)}), 500
+
     return jsonify({"message": "Product updated successfully"})
 
 @app.route('/products/<int:id>', methods=['DELETE'])
 def delete_product(id):
     connection = connect()
-    query = f"CALL delete_product({id});"
-    execute_query(connection, query)
+    if connection is None:
+        print("Failed to connect to the database", file=sys.stderr)
+        return jsonify({'error': 'Database connection failed'}), 500
+
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                query = f"CALL delete_product(%s);"
+                cursor.execute(query, (id,))
+    except Exception as e:
+        connection.rollback()
+        print("Failed to delete product", file=sys.stderr)
+        return jsonify({'error': 'Failed to delete product', 'details': str(e)}), 500
+
     return jsonify({"message": "Product deleted successfully"})
 
 if __name__ == '__main__':
