@@ -1,0 +1,77 @@
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-md-8">
+        <h2 class="text-center">Clients</h2>
+        <div class="form-group">
+          <input type="text" [(ngModel)]="searchText" (input)="searchClients()" placeholder="Search clients by name" class="form-control">
+        </div>
+        <button (click)="sortClients()" class="btn btn-secondary sort-button">Sort by Name</button>
+        <button (click)="filterClientsWithoutEmail()" class="btn btn-secondary filter-button">Filter Clients Without Email</button>
+        <button (click)="openOrdersChartModal()" class="btn btn-secondary chart-button">View Orders Chart</button>
+
+  
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+                <th>№</th>
+                <th (click)="sortClients()">Name</th>
+                <th>Email</th>
+                <th>Operations</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let client of filteredClients; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ client.name }}</td>
+              <td>{{ client.email }}</td>
+              <!--<td>{{ client.address }}</td>
+              <td>{{ client.phone }}</td>-->
+              <td>
+                <button class="btn btn-info btn-sm" (click)="viewClient(client)">View</button>
+                <button class="btn btn-warning btn-sm" (click)="editClient(client)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="deleteClient(client.id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <hr class="my-4">
+  
+        <div class="form-container">
+          <h3>Add New Client</h3>
+          <form (ngSubmit)="addClient()" class="mt-3">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" [(ngModel)]="newClient.name" name="name" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="address">Address:</label>
+              <input type="text" [(ngModel)]="newClient.address" name="address" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" [(ngModel)]="newClient.email" name="email" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone:</label>
+              <input type="text" [(ngModel)]="newClient.phone" name="phone" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Add Client</button>
+          </form>
+        </div>
+  
+        <!-- Модальні вікна по кнопці опис -->
+        <app-client-modal 
+          *ngIf="selectedClient" 
+          [client]="selectedClient" 
+          [isEditMode]="isEditMode" 
+          (save)="saveClient()" 
+          (close)="closeModal()">
+        </app-client-modal>
+
+        <app-orders-chart 
+            *ngIf="isOrdersChartModalOpen" 
+            (close)="closeOrdersChartModal()">
+        </app-orders-chart>
+      </div>
+  </div>

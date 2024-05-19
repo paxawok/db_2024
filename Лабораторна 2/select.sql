@@ -128,4 +128,45 @@ group by client_name;
 SELECT * FROM pg_trigger;
 
 SELECT * FROM pg_trigger WHERE tgname = 'trigger_log_new_product_4';
-SELECT * FROM pg_proc WHERE proname = 'log_new_product';
+/*
+COPY (
+    SELECT row_to_json(t)
+    FROM (
+        SELECT * FROM Clients
+    ) t
+) TO 'F://data/clients.json';
+COPY (
+    SELECT row_to_json(t)
+    FROM (
+        SELECT * FROM Products
+    ) t
+) TO 'F://data/products.json';
+
+COPY (
+    SELECT row_to_json(t)
+    FROM (
+        SELECT * FROM Categories
+    ) t
+) TO 'F://data/categories.json';
+
+COPY (
+    SELECT row_to_json(t)
+    FROM (
+        SELECT * FROM Orders
+    ) t
+) TO 'F://data/orders.json';
+
+COPY (
+    SELECT row_to_json(t)
+    FROM (
+        SELECT * FROM Order_Details
+    ) t
+) TO 'F://data/order_details.json';
+
+COPY (
+    SELECT row_to_json(t)
+    FROM (
+        SELECT * FROM Payments
+    ) t
+) TO 'F://data/payments.json';
+*/

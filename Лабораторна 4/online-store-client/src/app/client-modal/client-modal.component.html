@@ -1,0 +1,31 @@
+<div class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>{{ isEditMode ? 'Edit Client' : 'View Client' }}</h2>
+      <form *ngIf="isEditMode">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" [(ngModel)]="client.name" name="name" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <input type="text" [(ngModel)]="client.address" name="address" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" [(ngModel)]="client.email" name="email" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone:</label>
+          <input type="text" [(ngModel)]="client.phone" name="phone" class="form-control">
+        </div>
+        <button type="button" class="btn btn-success" (click)="saveClient()">Save</button>
+      </form>
+      <div *ngIf="!isEditMode">
+        <p><strong>Name:</strong> {{ client.name }}</p>
+        <p><strong>Address:</strong> {{ client.address }}</p>
+        <p><strong>Email:</strong> {{ client.email }}</p>
+        <p><strong>Phone:</strong> {{ client.phone }}</p>
+      </div>
+    </div>
+  </div>
