@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+/*const { Schema, model } = require('mongoose');
 
 const ClientSchema = new Schema({
     id: Number,
@@ -8,4 +8,4 @@ const ClientSchema = new Schema({
     phone: String
 });
 
-module.exports = model('Client', ClientSchema, 'Clients');
+module.exports = model('Client', ClientSchema, 'Clients');*/
