@@ -87,5 +87,49 @@ def delete_product(id):
 
     return jsonify({"message": "Product deleted successfully"})
 
+@app.route('/transaction', methods=['POST'])
+def perform_transaction():
+    connection = connect()
+    if connection is None:
+        return jsonify({'error': 'Database connection failed'}), 500
+
+    transaction_data = request.json
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                for operation in transaction_data["operations"]:
+                    if operation["type"] == "insert":
+                        cursor.execute("""
+                            INSERT INTO Products (name, description, price, category_id) 
+                            VALUES (%s, %s, %s, %s);
+                        """, (
+                            operation["name"], 
+                            operation["description"], 
+                            operation["price"], 
+                            operation["category_id"]
+                        ))
+                    elif operation["type"] == "update":
+                        cursor.execute("""
+                            UPDATE Products 
+                            SET 
+                                name = %s,
+                                description = %s,
+                                price = %s,
+                                category_id = %s
+                            WHERE id = %s;
+                        """, (
+                            operation["name"], 
+                            operation["description"], 
+                            operation["price"], 
+                            operation["category_id"], 
+                            operation["id"]
+                        ))
+    except Exception as e:
+        print("Error during transaction:", e)
+        connection.rollback()
+        return jsonify({'error': 'Failed to perform transaction', 'details': str(e)}), 500
+
+    return jsonify({"message": "Transaction performed successfully"})
+
 if __name__ == '__main__':
     app.run(debug=True)
